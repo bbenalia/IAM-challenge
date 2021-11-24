@@ -3,7 +3,9 @@ const { httpResponse } = require("../utils/http");
 
 require("dotenv").config();
 
-AWS.config.update({ dynamodb: { endpoint: process.env.DYNAMODB_ENDPOINT } });
+// TODO: condition
+// only for local development
+// AWS.config.update({ dynamodb: { endpoint: process.env.DYNAMODB_ENDPOINT } });
 
 // Get the DynamoDB table name from environment variables
 const tableName = process.env.TABLE;

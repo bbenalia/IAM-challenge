@@ -1,0 +1,13 @@
+version = 0.1
+[default]
+[default.deploy]
+[default.deploy.parameters]
+stack_name = "IAM-challenge-stg"
+s3_bucket = "aws-sam-cli-managed-default-samclisourcebucket-2870tsibo7qt"
+s3_prefix = "IAM-challenge-stg"
+region = "eu-north-1"
+confirm_changeset = true
+capabilities = "CAPABILITY_IAM"
+disable_rollback = true
+parameter_overrides = "Stage=\"stg\""
+image_repositories = []

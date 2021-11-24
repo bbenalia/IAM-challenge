@@ -5,7 +5,21 @@ Description: >-
 Transform:
   - AWS::Serverless-2016-10-31
 
+Parameters:
+  Stage:
+    Type: String
+    Default: stg
+
 Resources:
+  postsApi:
+    Type: AWS::Serverless::Api
+    Properties:
+      StageName: !Ref Stage
+      Cors:
+        AllowMethods: "'*'"
+        AllowHeaders: "'*'"
+        AllowOrigin: "'*'"
+
   getAllPostsFunction:
     Type: AWS::Serverless::Function
     Properties:
@@ -26,6 +40,7 @@ Resources:
         Api:
           Type: Api
           Properties:
+            RestApiId: !Ref postsApi
             Path: /posts
             Method: GET
 
@@ -49,6 +64,7 @@ Resources:
         Api:
           Type: Api
           Properties:
+            RestApiId: !Ref postsApi
             Path: /post
             Method: POST
 
@@ -72,6 +88,7 @@ Resources:
         Api:
           Type: Api
           Properties:
+            RestApiId: !Ref postsApi
             Path: /post/{id}
             Method: PATCH
 
@@ -95,6 +112,7 @@ Resources:
         Api:
           Type: Api
           Properties:
+            RestApiId: !Ref postsApi
             Path: /post/{id}
             Method: DELETE
 
@@ -111,4 +129,4 @@ Resources:
 Outputs:
   WebEndpoint:
     Description: "API Gateway endpoint URL for Prod stage"
-    Value: !Sub "https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/"
+    Value: !Sub "https://${postsApi}.execute-api.${AWS::Region}.amazonaws.com/${Stage}/"
