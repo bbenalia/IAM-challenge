@@ -1,0 +1,114 @@
+AWSTemplateFormatVersion: 2010-09-09
+Description: >-
+  IAM-challenge
+
+Transform:
+  - AWS::Serverless-2016-10-31
+
+Resources:
+  getAllPostsFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: src/handlers/get-all-posts.getAllPostsHandler
+      Runtime: nodejs14.x
+      Architectures:
+        - x86_64
+      MemorySize: 128
+      Timeout: 100
+      Description: Lambda function to get all posts from the DynamoDB table.
+      Policies:
+        - DynamoDBCrudPolicy:
+            TableName: !Ref PostsTable
+      Environment:
+        Variables:
+          TABLE: !Ref PostsTable
+      Events:
+        Api:
+          Type: Api
+          Properties:
+            Path: /posts
+            Method: GET
+
+  createPostFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: src/handlers/create-post.createPostHandler
+      Runtime: nodejs14.x
+      Architectures:
+        - x86_64
+      MemorySize: 128
+      Timeout: 100
+      Description: Lambda function to create a post.
+      Policies:
+        - DynamoDBCrudPolicy:
+            TableName: !Ref PostsTable
+      Environment:
+        Variables:
+          TABLE: !Ref PostsTable
+      Events:
+        Api:
+          Type: Api
+          Properties:
+            Path: /post
+            Method: POST
+
+  updatePostFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: src/handlers/update-post.updatePostHandler
+      Runtime: nodejs14.x
+      Architectures:
+        - x86_64
+      MemorySize: 128
+      Timeout: 100
+      Description: Lambda to update a post
+      Policies:
+        - DynamoDBCrudPolicy:
+            TableName: !Ref PostsTable
+      Environment:
+        Variables:
+          TABLE: !Ref PostsTable
+      Events:
+        Api:
+          Type: Api
+          Properties:
+            Path: /post/{id}
+            Method: PATCH
+
+  deletePostFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: src/handlers/delete-post.deletePostHandler
+      Runtime: nodejs14.x
+      Architectures:
+        - x86_64
+      MemorySize: 128
+      Timeout: 100
+      Description: Lambda to delete a post
+      Policies:
+        - DynamoDBCrudPolicy:
+            TableName: !Ref PostsTable
+      Environment:
+        Variables:
+          TABLE: !Ref PostsTable
+      Events:
+        Api:
+          Type: Api
+          Properties:
+            Path: /post/{id}
+            Method: DELETE
+
+  PostsTable:
+    Type: AWS::Serverless::SimpleTable
+    Properties:
+      PrimaryKey:
+        Name: id
+        Type: String
+      ProvisionedThroughput:
+        ReadCapacityUnits: 2
+        WriteCapacityUnits: 2
+
+Outputs:
+  WebEndpoint:
+    Description: "API Gateway endpoint URL for Prod stage"
+    Value: !Sub "https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/"
