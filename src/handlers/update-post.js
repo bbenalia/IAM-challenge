@@ -31,17 +31,31 @@ exports.updatePostHandler = async (event, context) => {
       });
     }
 
-    const params = {
-      TableName: tableName,
-      Key: { id: postId },
-      UpdateExpression: "set body = :body, title = :title",
-      ExpressionAttributeValues: { ":body": postBody, ":title": postTitle },
-      ReturnValues: "UPDATED_NEW",
-    };
+    // only for HASH key
+    // const result = await dynamo.get(params).promise();
 
-    const result = await dynamo.get(params).promise();
+    // both HASH key and RANGE key
+    const result = await dynamo
+      .query({
+        TableName: tableName,
+        KeyConditionExpression: "id = :postId",
+        ExpressionAttributeValues: {
+          ":postId": postId,
+        },
+        Limit: 1,
+      })
+      .promise();
 
-    if (result?.Item) {
+    if (result?.Count) {
+      const [post] = result.Items;
+      const params = {
+        TableName: tableName,
+        Key: { id: postId, createdAt: post.createdAt },
+        UpdateExpression: "set body = :body, title = :title",
+        ExpressionAttributeValues: { ":body": postBody, ":title": postTitle },
+        ReturnValues: "UPDATED_NEW",
+      };
+
       await dynamo.update(params).promise();
 
       return httpResponse(200, {

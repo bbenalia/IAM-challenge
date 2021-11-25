@@ -30,14 +30,28 @@ exports.deletePostHandler = async (event, context) => {
       });
     }
 
-    const params = {
-      TableName: tableName,
-      Key: { id: postId },
-    };
+    // only for HASH key
+    // const result = await dynamo.get(params).promise();
 
-    const result = await dynamo.get(params).promise();
+    // both HASH key and RANGE key
+    const result = await dynamo
+      .query({
+        TableName: tableName,
+        KeyConditionExpression: "id = :postId",
+        ExpressionAttributeValues: {
+          ":postId": postId,
+        },
+        Limit: 1,
+      })
+      .promise();
 
-    if (result?.Item) {
+    if (result.Count) {
+      const [post] = result.Items;
+      const params = {
+        TableName: tableName,
+        Key: { id: postId, createdAt: post.createdAt },
+      };
+
       await dynamo.delete(params).promise();
 
       return httpResponse(200, {
@@ -50,6 +64,7 @@ exports.deletePostHandler = async (event, context) => {
     return httpResponse(400, {
       status: "Error",
       message: "Post not found",
+      data: result,
     });
   } catch (err) {
     return httpResponse(500, { status: "error", message: err.message });

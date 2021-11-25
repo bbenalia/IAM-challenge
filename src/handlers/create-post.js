@@ -3,7 +3,6 @@ const { httpResponse } = require("../utils/http");
 const { uuid } = require("uuidv4");
 require("dotenv").config();
 
-// TODO: condition
 // only for local development
 // AWS.config.update({ dynamodb: { endpoint: process.env.DYNAMODB_ENDPOINT } });
 
@@ -29,7 +28,13 @@ exports.createPostHandler = async (event, context) => {
 
     const params = {
       TableName: tableName,
-      Item: { id: uuid(), body: postBody, title: postTitle },
+      Item: {
+        id: uuid(),
+        createdAt: Date.now(),
+        body: postBody,
+        title: postTitle,
+        postStatus: "OK",
+      },
     };
 
     await dynamo.put(params).promise();

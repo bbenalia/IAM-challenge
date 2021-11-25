@@ -3,9 +3,10 @@ const { httpResponse } = require("../utils/http");
 
 require("dotenv").config();
 
-// TODO: condition
 // only for local development
-// AWS.config.update({ dynamodb: { endpoint: process.env.DYNAMODB_ENDPOINT } });
+const stage = process.env.DYNAMODB_ENDPOINT;
+if (stage === "dev")
+  AWS.config.update({ dynamodb: { endpoint: process.env.DYNAMODB_ENDPOINT } });
 
 // Get the DynamoDB table name from environment variables
 const tableName = process.env.TABLE;
@@ -21,9 +22,21 @@ const dynamo = new AWS.DynamoDB.DocumentClient();
  */
 exports.getAllPostsHandler = async (event, context) => {
   try {
-    const posts = await dynamo.scan({ TableName: tableName }).promise();
+    const posts = await dynamo
+      .query({
+        TableName: tableName,
+        IndexName: "statusIndex",
+        KeyConditionExpression: "postStatus = :postStatus ",
+        ExpressionAttributeValues: {
+          ":postStatus": "OK",
+        },
+        ScanIndexForward: false,
+        Select: "ALL_ATTRIBUTES",
+        Limit: 5,
+      })
+      .promise();
 
-    return httpResponse(200, { status: "success", posts: posts?.Items || [] });
+    return httpResponse(200, { status: "success", data: posts || [] });
   } catch (err) {
     return httpResponse(500, { status: "error", message: err.message });
   }
