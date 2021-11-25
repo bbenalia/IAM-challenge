@@ -14,7 +14,7 @@ Globals:
     MemorySize: 128
     Environment:
       Variables:
-        TABLE: !Ref PostsTable
+        TABLE: !GetAtt TableSSMStore.Value
         STAGE: !Ref Stage
 
 Parameters:
@@ -23,6 +23,13 @@ Parameters:
     Default: stg
 
 Resources:
+  TableSSMStore:
+    Type: AWS::SSM::Parameter
+    Properties:
+      Name: "TableName"
+      Value: !Ref PostsTable
+      Type: String
+
   postsApi:
     Type: AWS::Serverless::Api
     Properties:
@@ -45,7 +52,7 @@ Resources:
       Description: Lambda function to get all posts from the DynamoDB table.
       Policies:
         - DynamoDBCrudPolicy:
-            TableName: !Ref PostsTable
+            TableName: !GetAtt TableSSMStore.Value
       Events:
         Api:
           Type: Api
@@ -63,10 +70,7 @@ Resources:
       Description: Lambda function to create a post.
       Policies:
         - DynamoDBCrudPolicy:
-            TableName: !Ref PostsTable
-      Environment:
-        Variables:
-          TABLE: !Ref PostsTable
+            TableName: !GetAtt TableSSMStore.Value
       Events:
         Api:
           Type: Api
@@ -82,10 +86,7 @@ Resources:
       Description: Lambda to update a post
       Policies:
         - DynamoDBCrudPolicy:
-            TableName: !Ref PostsTable
-      Environment:
-        Variables:
-          TABLE: !Ref PostsTable
+            TableName: !GetAtt TableSSMStore.Value
       Events:
         Api:
           Type: Api
@@ -101,10 +102,7 @@ Resources:
       Description: Lambda to delete a post
       Policies:
         - DynamoDBCrudPolicy:
-            TableName: !Ref PostsTable
-      Environment:
-        Variables:
-          TABLE: !Ref PostsTable
+            TableName: !GetAtt TableSSMStore.Value
       Events:
         Api:
           Type: Api
