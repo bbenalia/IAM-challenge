@@ -4,7 +4,9 @@ const { uuid } = require("uuidv4");
 require("dotenv").config();
 
 // only for local development
-// AWS.config.update({ dynamodb: { endpoint: process.env.DYNAMODB_ENDPOINT } });
+const stage = process.env.DYNAMODB_ENDPOINT;
+if (stage === "dev")
+  AWS.config.update({ dynamodb: { endpoint: process.env.DYNAMODB_ENDPOINT } });
 
 // Get the DynamoDB table name from environment variables
 const tableName = process.env.TABLE;

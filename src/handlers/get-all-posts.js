@@ -1,6 +1,5 @@
 const AWS = require("aws-sdk");
 const { httpResponse } = require("../utils/http");
-
 require("dotenv").config();
 
 // only for local development
