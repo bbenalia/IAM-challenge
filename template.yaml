@@ -125,7 +125,7 @@ Resources:
   MyCognitoUserPool:
     Type: AWS::Cognito::UserPool
     Properties:
-      UserPoolName: iam_challenge_cognito_user_pool
+      UserPoolName: !Sub "iam_challenge_cognito_user_pool_${Stage}"
       LambdaConfig:
         PreSignUp: !GetAtt PreSignupLambdaFunction.Arn
       Policies:
