@@ -5,6 +5,17 @@ Description: >-
 Transform:
   - AWS::Serverless-2016-10-31
 
+Globals:
+  Function:
+    Timeout: 30
+    Runtime: nodejs14.x
+    Architectures:
+      - x86_64
+    MemorySize: 128
+    Environment:
+      Variables:
+        TABLE: !Ref PostsTable
+
 Parameters:
   Stage:
     Type: String
@@ -30,18 +41,10 @@ Resources:
     Type: AWS::Serverless::Function
     Properties:
       Handler: src/handlers/get-all-posts.getAllPostsHandler
-      Runtime: nodejs14.x
-      Architectures:
-        - x86_64
-      MemorySize: 128
-      Timeout: 100
       Description: Lambda function to get all posts from the DynamoDB table.
       Policies:
         - DynamoDBCrudPolicy:
             TableName: !Ref PostsTable
-      Environment:
-        Variables:
-          TABLE: !Ref PostsTable
       Events:
         Api:
           Type: Api
@@ -56,11 +59,6 @@ Resources:
     Type: AWS::Serverless::Function
     Properties:
       Handler: src/handlers/create-post.createPostHandler
-      Runtime: nodejs14.x
-      Architectures:
-        - x86_64
-      MemorySize: 128
-      Timeout: 100
       Description: Lambda function to create a post.
       Policies:
         - DynamoDBCrudPolicy:
@@ -80,11 +78,6 @@ Resources:
     Type: AWS::Serverless::Function
     Properties:
       Handler: src/handlers/update-post.updatePostHandler
-      Runtime: nodejs14.x
-      Architectures:
-        - x86_64
-      MemorySize: 128
-      Timeout: 100
       Description: Lambda to update a post
       Policies:
         - DynamoDBCrudPolicy:
@@ -104,11 +97,6 @@ Resources:
     Type: AWS::Serverless::Function
     Properties:
       Handler: src/handlers/delete-post.deletePostHandler
-      Runtime: nodejs14.x
-      Architectures:
-        - x86_64
-      MemorySize: 128
-      Timeout: 100
       Description: Lambda to delete a post
       Policies:
         - DynamoDBCrudPolicy:
@@ -137,7 +125,7 @@ Resources:
   MyCognitoUserPool:
     Type: AWS::Cognito::UserPool
     Properties:
-      UserPoolName: sam_api_gateway_cup_auth_cognito_user_pool
+      UserPoolName: iam_challenge_cognito_user_pool
       LambdaConfig:
         PreSignUp: !GetAtt PreSignupLambdaFunction.Arn
       Policies:
@@ -153,7 +141,7 @@ Resources:
   CognitoUserPoolClient:
     Type: AWS::Cognito::UserPoolClient
     Properties:
-      ClientName: sam_api_gateway_cup_auth_cognito_client
+      ClientName: iam_challenge_cognito_client
       UserPoolId: !Ref MyCognitoUserPool
       GenerateSecret: true
       SupportedIdentityProviders:
@@ -185,9 +173,6 @@ Resources:
           return event
         }
       Handler: index.handler
-      MemorySize: 128
-      Runtime: nodejs14.x
-      Timeout: 3
 
   LambdaCognitoUserPoolExecutionPermission:
     Type: AWS::Lambda::Permission
