@@ -1,0 +1,207 @@
+{
+	"info": {
+		"_postman_id": "882a11da-fa6a-4b88-9d90-886b6a97da74",
+		"name": "SAM-Challenge",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "LIST posts",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{host}}/posts",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"posts"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "ADD post",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"title\":\"Hola 6\",\r\n    \"body\": \"Soy body 6\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{host}}/post",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"post"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "MODIFY post",
+			"request": {
+				"method": "PATCH",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"title\":\"Hola 2\",\r\n    \"body\": \"Soy body 2\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{host}}/post/3fec96f2-813d-4293-a938-e49353e8ab39",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"post",
+						"3fec96f2-813d-4293-a938-e49353e8ab39"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "DELETE post",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"title\":\"Hola 1\",\r\n    \"body\": \"Soy body 1\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{host}}/post/3fec96f2-813d-4293-a938-e49353e8ab39",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"post",
+						"3fec96f2-813d-4293-a938-e49353e8ab39"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"auth": {
+		"type": "oauth2",
+		"oauth2": [
+			{
+				"key": "accessTokenUrl",
+				"value": "https://cr2b9gh792-prod.auth.eu-north-1.amazoncognito.com/oauth2/token",
+				"type": "string"
+			},
+			{
+				"key": "authUrl",
+				"value": "https://cr2b9gh792-prod.auth.eu-north-1.amazoncognito.com/login",
+				"type": "string"
+			},
+			{
+				"key": "clientId",
+				"value": "2udikk3fi3j4mmdudj7tt5setn",
+				"type": "string"
+			},
+			{
+				"key": "clientSecret",
+				"value": "1j8jl6jqmgtmv9l8aq7k2fni7vdgr3e6u761mehuqrn0oda28nf2",
+				"type": "string"
+			},
+			{
+				"key": "tokenType",
+				"value": "Bearer",
+				"type": "string"
+			},
+			{
+				"key": "accessToken",
+				"value": "eyJraWQiOiI5UkRuUGhMZmpCWGluNDlyMHpoS3FIVGpSd1hoMEVNZTNYMGk1WStQWnZnPSIsImFsZyI6IlJTMjU2In0.eyJhdF9oYXNoIjoiZ2Faekd2ek1TaWNPaUkxNk1pNmhtUSIsInN1YiI6IjFiZmI2YmFhLWRjMDQtNDdmMC1iZTQ4LTIxODRmODkxMTRlNyIsImVtYWlsX3ZlcmlmaWVkIjpmYWxzZSwiaXNzIjoiaHR0cHM6XC9cL2NvZ25pdG8taWRwLmV1LW5vcnRoLTEuYW1hem9uYXdzLmNvbVwvZXUtbm9ydGgtMV82ZmMzWE5YbmwiLCJjb2duaXRvOnVzZXJuYW1lIjoiMWJmYjZiYWEtZGMwNC00N2YwLWJlNDgtMjE4NGY4OTExNGU3Iiwib3JpZ2luX2p0aSI6ImIyZDE1ZTQwLWM1NDktNDQwNy1hOTdlLTIzY2ExZDM0OGEwMCIsImF1ZCI6IjIxaGN1N2Q3YWZlc3ZxYXNtbHFwa2tjYWhjIiwiZXZlbnRfaWQiOiI2ZThhZDQzMy0wNWVkLTQwNGUtOGZkMS1lNTFiNDU3OWFjZjQiLCJ0b2tlbl91c2UiOiJpZCIsImF1dGhfdGltZSI6MTYzNzg0ODgzNCwiZXhwIjoxNjM3ODUyNDM0LCJpYXQiOjE2Mzc4NDg4MzQsImp0aSI6IjcyYWU0OGJkLWNkY2YtNDVkZC05NjgyLTUwZDY5ZTFiZmI0OCIsImVtYWlsIjoiYnJhaGltY2FzYXNAaG90bWFpbC5lcyJ9.KwdvogVFgHXds4bu2LUykbGqftrmd34q9LOI7dPwWpXVJ9mheWr6Pgi0ScDRFWHkWSulkHKECckTXJoJPbQa2PMFhTfyYOTaVCcZ6eP9s4VqgQ41qIauDJd-SrGsR0Czhul4idTFmm3q0ZPlEuwo5o8shnoeSusO8u5goUm9h8ATXpKmNmRYEG59IL6_2qcW3evXfu1mXy1F0oZiG1CgRg6HzkelyG8EPN3JcetjA_V76Sn_x5P07pShEVpLly7Y7KhJKcNabWbvAzrs6-fjsyU0A_HbFlkMg2vT5OO7A9KkbMAUqKOzLcup_K-Xha_rDrGE-rrt-wBeEtFqkq-9nQ",
+				"type": "string"
+			},
+			{
+				"key": "resource",
+				"value": {
+					"ecd49839-6fe9-4ffd-92ee-77b82a3b3ae0": "id_token"
+				},
+				"type": "any"
+			},
+			{
+				"key": "tokenName",
+				"value": "ct",
+				"type": "string"
+			},
+			{
+				"key": "challengeAlgorithm",
+				"value": "S256",
+				"type": "string"
+			},
+			{
+				"key": "redirect_uri",
+				"value": "https://iamchallenge.com/callback",
+				"type": "string"
+			},
+			{
+				"key": "grant_type",
+				"value": "authorization_code",
+				"type": "string"
+			},
+			{
+				"key": "addTokenTo",
+				"value": "header",
+				"type": "string"
+			},
+			{
+				"key": "client_authentication",
+				"value": "header",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "host",
+			"value": ""
+		}
+	]
+}
