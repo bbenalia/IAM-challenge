@@ -26,8 +26,8 @@ Resources:
   TableSSMStore:
     Type: AWS::SSM::Parameter
     Properties:
-      Name: "TableName"
-      Value: !Ref PostsTable
+      Name: !Sub "TableName-${Stage}"
+      Value: !Sub "PostsTable-${Stage}"
       Type: String
 
   postsApi:
@@ -114,7 +114,7 @@ Resources:
   PostsTable:
     Type: AWS::DynamoDB::Table
     Properties:
-      TableName: PostsTable
+      TableName: !GetAtt TableSSMStore.Value
       AttributeDefinitions:
         - AttributeName: id
           AttributeType: S
